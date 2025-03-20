@@ -1,7 +1,7 @@
-package org.example.domain.repository_service;
+package org.example.domain.services;
 
 import org.example.domain.model.Category;
-import org.springframework.stereotype.Component;
+import org.example.domain.repositories.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +21,12 @@ public class CategoryService {
         return category;
     }
 
-    public void updateCategory(Category category) {
-        repository.update(category);
+    public void updateCategoryType(UUID id, String type) {
+        repository.findById(id).orElseThrow().type = type;
+    }
+
+    public void updateCategoryName(UUID id, String name) {
+        repository.findById(id).orElseThrow().name = name;
     }
 
     public void deleteCategory(UUID id) {
@@ -35,5 +39,9 @@ public class CategoryService {
 
     public List<Category> getAllCategories() {
         return repository.findAll();
+    }
+
+    public boolean categoryExists(UUID id) {
+        return repository.findById(id).isPresent();
     }
 }

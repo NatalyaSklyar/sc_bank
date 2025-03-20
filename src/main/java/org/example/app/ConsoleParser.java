@@ -1,80 +1,53 @@
 package org.example.app;
 
-import org.example.domain.repository_service.BankAccountService;
-import org.example.domain.repository_service.CategoryService;
-import org.example.domain.repository_service.OperationService;
+import org.example.domain.commands.*;
+import org.example.domain.services.BankAccountService;
+import org.example.domain.services.CategoryService;
+import org.example.domain.services.OperationService;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
-import java.util.UUID;
-
 
 public class ConsoleParser {
-    private final BankAccountService bankAccountService;
-    private final CategoryService categoryService;
-    private final OperationService operationService;
+    private final Map<String, Command> commands = new HashMap<>();
+    private final Scanner scanner = new Scanner(System.in);
 
     public ConsoleParser(BankAccountService bankAccountService, CategoryService categoryService, OperationService operationService) {
-        this.bankAccountService = bankAccountService;
-        this.categoryService = categoryService;
-        this.operationService = operationService;
+        commands.put("1", new CreateAccountCommand(bankAccountService, scanner));
+        commands.put("2", new ShowAccountsCommand(bankAccountService));
+        commands.put("3", new CreateCategoryCommand(categoryService, scanner));
+        commands.put("4", new ShowCategoriesCommand(categoryService));
+        commands.put("5", new CreateOperationCommand(operationService, scanner));
+        commands.put("6", new ShowOperationsCommand(operationService));
     }
 
     public void start() {
-        Scanner scanner = new Scanner(System.in);
-        String command;
-
-        System.out.println("Добро пожаловать в систему учета финансов! Введите команду:");
+        System.out.println("Добро пожаловать в систему учета финансов!");
         while (true) {
+            System.out.println("Выберите команду:");
+            System.out.println("  1 - Создать счет");
+            System.out.println("  2 - Показать счета");
+            System.out.println("  3 - Создать категорию");
+            System.out.println("  4 - Показать категории");
+            System.out.println("  5 - Создать операцию");
+            System.out.println("  6 - Показать операции");
+            System.out.println("  0 - Выйти");
             System.out.print("> ");
-            command = scanner.nextLine().trim().toLowerCase();
 
-            if (command.equals("exit")) {
+            String command = scanner.nextLine().trim();
+            if (command.equals("0")) {
                 System.out.println("Выход из программы.");
-                break;
-            } else if (command.startsWith("create account")) {
-                System.out.print("Введите название счета: ");
-                String name = scanner.nextLine();
-                System.out.print("Введите баланс: ");
-                double balance = Double.parseDouble(scanner.nextLine());
-                UUID id = bankAccountService.createAccount(name, balance).getId();
-                System.out.println("Счет создан с ID: " + id);
-            } else if (command.startsWith("show accounts")) {
-                bankAccountService.getAllAccounts().forEach(System.out::println);
-            } else if (command.startsWith("create category")) {
-                System.out.print("Введите тип (income/expense): ");
-                String type = scanner.nextLine();
-                System.out.print("Введите название категории: ");
-                String name = scanner.nextLine();
-                UUID id = categoryService.createCategory(type, name).getId();
-                System.out.println("Категория создана с ID: " + id);
-            } else if (command.startsWith("show categories")) {
-                categoryService.getAllCategories().forEach(System.out::println);
-            } else if (command.startsWith("create operation")) {
-                System.out.print("Введите тип операции (income/expense): ");
-                String type = scanner.nextLine();
-                System.out.print("Введите ID счета: ");
-                UUID accountId = UUID.fromString(scanner.nextLine());
-                System.out.print("Введите сумму: ");
-                float amount = Float.parseFloat(scanner.nextLine());
-                System.out.print("Введите ID категории: ");
-                UUID categoryId = UUID.fromString(scanner.nextLine());
-                System.out.print("Введите описание (опционально): ");
-                String description = scanner.nextLine();
-                UUID id = operationService.createOperation(type, accountId, amount, description, categoryId).getId();
-                System.out.println("Операция создана с ID: " + id);
-            } else if (command.startsWith("show operations")) {
-                operationService.getAllOperations().forEach(System.out::println);
+                scanner.close();
+                return;
+            }
+
+            Command action = commands.get(command);
+            if (action != null) {
+                action.execute();
             } else {
-                System.out.println("Неизвестная команда. Доступные команды:");
-                System.out.println("  - create account");
-                System.out.println("  - show accounts");
-                System.out.println("  - create category");
-                System.out.println("  - show categories");
-                System.out.println("  - create operation");
-                System.out.println("  - show operations");
-                System.out.println("  - exit");
+                System.out.println("Некорректный ввод. Пожалуйста, выберите номер команды из списка.");
             }
         }
-        scanner.close();
     }
 }

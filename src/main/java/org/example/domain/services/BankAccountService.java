@@ -1,9 +1,8 @@
-package org.example.domain.repository_service;
+package org.example.domain.services;
 
 import org.example.domain.model.BankAccount;
-import org.springframework.stereotype.Component;
+import org.example.domain.repositories.BankAccountRepository;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -32,17 +31,33 @@ public class BankAccountService{
 
     public void deposit(UUID id, double amount) {
         BankAccount account = getAccount(id);
-        account.deposit(amount);
-        repository.update(account);
+        if (amount > 0) {
+            account.setBalance(account.getBalance() + amount);
+        }
+        else {
+            throw new IllegalArgumentException("Deposit amount must be positive");
+        }
     }
 
     public void withdraw(UUID id, double amount) {
         BankAccount account = getAccount(id);
-        account.withdraw(amount);
-        repository.update(account);
+        if (amount > 0) {
+            account.setBalance(account.getBalance() - amount);
+        }
+        else {
+            throw new IllegalArgumentException("Deposit amount must be positive");
+        }
     }
 
-    public List<BankAccount> getAllAccounts() {
+    public double getBalance(UUID id) {
+        return repository.findById(id).orElseThrow().getBalance();
+    }
+
+    public boolean accountExists(UUID id) {
+        return repository.findById(id).isPresent();
+    }
+
+    public Iterable<BankAccount> getAllAccounts() {
         return repository.findAll();
     }
 }

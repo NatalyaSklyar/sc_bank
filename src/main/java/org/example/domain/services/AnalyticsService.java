@@ -1,4 +1,4 @@
-package org.example.domain.repository_service;
+package org.example.domain.services;
 
 import org.example.domain.model.Operation;
 import java.util.List;

@@ -11,4 +11,19 @@ public class Category extends FinanceEntity {
         this.type = type;
         this.name = name;
     }
+
+    public Category() {
+        this.id = UUID.randomUUID();
+        this.type = "";
+        this.name = "";
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

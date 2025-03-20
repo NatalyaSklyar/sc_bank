@@ -12,6 +12,12 @@ public class BankAccount extends FinanceEntity {
         this.balance = balance;
     }
 
+    public BankAccount() {
+        this.id = UUID.randomUUID();
+        this.name = "";
+        this.balance = 0;
+    }
+
     public String getName() {
         return name;
     }
@@ -24,20 +30,8 @@ public class BankAccount extends FinanceEntity {
         return balance;
     }
 
-    public void deposit(double amount) {
-        if (amount > 0) {
-            balance += amount;
-        } else {
-            throw new IllegalArgumentException("Deposit amount must be positive");
-        }
-    }
-
-    public void withdraw(double amount) {
-        if (amount > 0 && amount <= balance) {
-            balance -= amount;
-        } else {
-            throw new IllegalArgumentException("Invalid withdraw amount");
-        }
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     @Override

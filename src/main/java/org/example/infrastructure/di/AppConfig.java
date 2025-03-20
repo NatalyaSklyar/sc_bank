@@ -2,12 +2,12 @@ package org.example.infrastructure.di;
 
 import org.example.app.ConsoleApp;
 import org.example.app.ConsoleParser;
-import org.example.domain.repository_service.BankAccountRepository;
-import org.example.domain.repository_service.CategotyRepository;
-import org.example.domain.repository_service.OperationRepository;
-import org.example.domain.repository_service.BankAccountService;
-import org.example.domain.repository_service.CategoryService;
-import org.example.domain.repository_service.OperationService;
+import org.example.domain.repositories.BankAccountRepository;
+import org.example.domain.repositories.CategoryRepository;
+import org.example.domain.repositories.OperationRepository;
+import org.example.domain.services.BankAccountService;
+import org.example.domain.services.CategoryService;
+import org.example.domain.services.OperationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,8 +33,8 @@ public class AppConfig {
     }
 
     @Bean
-    public CategotyRepository categoryRepository() {
-        return new CategotyRepository();
+    public CategoryRepository categoryRepository() {
+        return new CategoryRepository();
     }
 
     @Bean
@@ -48,12 +48,20 @@ public class AppConfig {
     }
 
     @Bean
-    public CategoryService categoryService(CategotyRepository repository) {
+    public CategoryService categoryService(CategoryRepository repository) {
         return new CategoryService(repository);
     }
 
     @Bean
-    public OperationService operationService(OperationRepository repository) {
-        return new OperationService(repository);
+    public OperationService operationService(
+            OperationRepository operationRepository,
+            BankAccountRepository accountRepository,
+            CategoryRepository categoryRepository
+            ) {
+        return new OperationService(
+                operationRepository,
+                accountRepository,
+                categoryRepository
+        );
     }
 }

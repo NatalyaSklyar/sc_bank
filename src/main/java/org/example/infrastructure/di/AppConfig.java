@@ -1,13 +1,11 @@
 package org.example.infrastructure.di;
 
-import org.example.app.ConsoleApp;
-import org.example.app.ConsoleParser;
+import org.example.app.console.ConsoleApp;
+import org.example.app.console.ConsoleParser;
 import org.example.domain.repositories.BankAccountRepository;
 import org.example.domain.repositories.CategoryRepository;
 import org.example.domain.repositories.OperationRepository;
-import org.example.domain.services.BankAccountService;
-import org.example.domain.services.CategoryService;
-import org.example.domain.services.OperationService;
+import org.example.domain.services.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,10 +14,20 @@ public class AppConfig {
 
     @Bean
     public ConsoleParser consoleParser(BankAccountService bankAccountService,
-            CategoryService categoryService,
-            OperationService operationService
+                                       CategoryService categoryService,
+                                       OperationService operationService,
+                                       ExporterService exporterService,
+                                       ImporterService importerService,
+                                       AnalyticsService analyticsService
     ) {
-        return new ConsoleParser(bankAccountService, categoryService, operationService);
+        return new ConsoleParser(
+                bankAccountService,
+                categoryService,
+                operationService,
+                exporterService,
+                importerService,
+                analyticsService
+        );
     }
 
     @Bean
@@ -43,8 +51,8 @@ public class AppConfig {
     }
 
     @Bean
-    public BankAccountService bankAccountService(BankAccountRepository repository) {
-        return new BankAccountService(repository);
+    public BankAccountService bankAccountService(BankAccountRepository bankAccountRepository) {
+        return new BankAccountService(bankAccountRepository);
     }
 
     @Bean
@@ -57,11 +65,38 @@ public class AppConfig {
             OperationRepository operationRepository,
             BankAccountRepository accountRepository,
             CategoryRepository categoryRepository
-            ) {
+    ) {
         return new OperationService(
                 operationRepository,
                 accountRepository,
                 categoryRepository
         );
+    }
+
+    @Bean
+    public ExporterService exporterService(
+            OperationRepository operationRepository,
+            BankAccountRepository accountRepository,
+            CategoryRepository categoryRepository) {
+        return new ExporterService(
+                accountRepository,
+                categoryRepository,
+                operationRepository);
+    }
+
+    @Bean
+    public ImporterService importerService(
+            OperationRepository operationRepository,
+            BankAccountRepository accountRepository,
+            CategoryRepository categoryRepository) {
+        return new ImporterService(
+                accountRepository,
+                categoryRepository,
+                operationRepository);
+    }
+
+    @Bean
+    public AnalyticsService analyticsService(OperationService operationService) {
+        return new AnalyticsService(operationService);
     }
 }

@@ -1,5 +1,6 @@
 package org.example.app;
 
+import org.example.app.console.ConsoleApp;
 import org.example.infrastructure.di.AppConfig;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

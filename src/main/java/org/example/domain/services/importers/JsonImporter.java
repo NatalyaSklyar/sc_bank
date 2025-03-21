@@ -19,12 +19,6 @@ public class JsonImporter extends AbstractImporter {
     private final HashMap<UUID, Operation> operations = new HashMap<>();
     private final HashMap<UUID, Category> categories = new HashMap<>();
 
-    private final Path filePath;
-
-    public JsonImporter(Path filePath) {
-        this.filePath = filePath;
-    }
-
     @Override
     public HashMap<UUID, BankAccount> getBankAccounts() {
         return bankAccounts;
@@ -41,7 +35,7 @@ public class JsonImporter extends AbstractImporter {
     }
 
     @Override
-    public void load() throws IOException {
+    public void load(Path filePath) throws IOException {
         if (!Files.exists(filePath) || Files.size(filePath) == 0) {
             return;
         }
@@ -49,7 +43,7 @@ public class JsonImporter extends AbstractImporter {
         var rootNode = objectMapper.readTree(filePath.toFile());
 
         List<BankAccount> bankAccountsList = objectMapper.readValue(
-                rootNode.get("bankAccounts").traverse(),
+                rootNode.get("accounts").traverse(),
                 new TypeReference<List<BankAccount>>() {
                 }
         );

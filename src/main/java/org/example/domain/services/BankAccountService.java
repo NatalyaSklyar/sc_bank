@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 
-public class BankAccountService{
+public class BankAccountService {
     private final BankAccountRepository repository;
 
     public BankAccountService(BankAccountRepository repository) {
@@ -33,8 +33,7 @@ public class BankAccountService{
         BankAccount account = getAccount(id);
         if (amount > 0) {
             account.setBalance(account.getBalance() + amount);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Deposit amount must be positive");
         }
     }
@@ -43,8 +42,7 @@ public class BankAccountService{
         BankAccount account = getAccount(id);
         if (amount > 0) {
             account.setBalance(account.getBalance() - amount);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Deposit amount must be positive");
         }
     }

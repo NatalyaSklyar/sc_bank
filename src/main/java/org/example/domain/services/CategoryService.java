@@ -22,11 +22,11 @@ public class CategoryService {
     }
 
     public void updateCategoryType(UUID id, String type) {
-        repository.findById(id).orElseThrow().type = type;
+        repository.findById(id).orElseThrow().setType(type);
     }
 
     public void updateCategoryName(UUID id, String name) {
-        repository.findById(id).orElseThrow().name = name;
+        repository.findById(id).orElseThrow().setName(name);
     }
 
     public void deleteCategory(UUID id) {

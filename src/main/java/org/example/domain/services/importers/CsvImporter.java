@@ -23,15 +23,10 @@ public class CsvImporter extends AbstractImporter {
     private final HashMap<UUID, Operation> operations = new HashMap<>();
     private final HashMap<UUID, Category> categories = new HashMap<>();
 
-    private final Path accountsPath;
-    private final Path operationsPath;
-    private final Path categoriesPath;
+    private Path accountsPath;
+    private Path operationsPath;
+    private Path categoriesPath;
 
-    public CsvImporter(Path accountsPath, Path operationsPath, Path categoriesPath) {
-        this.accountsPath = accountsPath;
-        this.operationsPath = operationsPath;
-        this.categoriesPath = categoriesPath;
-    }
 
     @Override
     public HashMap<UUID, BankAccount> getBankAccounts() {
@@ -57,10 +52,10 @@ public class CsvImporter extends AbstractImporter {
     }
 
     @Override
-    public void load() throws IOException {
-        CSVParser accountsParser = openCSV(accountsPath);
-        CSVParser categoriesParser = openCSV(categoriesPath);
-        CSVParser operationsParser = openCSV(operationsPath);
+    public void load(Path path) throws IOException {
+        CSVParser accountsParser = openCSV(Path.of(path + "/accounts.csv"));
+        CSVParser categoriesParser = openCSV(Path.of(path + "/categories.csv"));
+        CSVParser operationsParser = openCSV(Path.of(path + "/operations.csv"));
 
         List<BankAccount> bankAccountsList = accountsParser.stream().map(
                 record -> new BankAccount(

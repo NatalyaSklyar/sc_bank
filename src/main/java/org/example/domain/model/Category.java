@@ -3,8 +3,8 @@ package org.example.domain.model;
 import java.util.UUID;
 
 public class Category extends FinanceEntity {
-    public String type;
-    public String name;
+    private String type;
+    private String name;
 
     public Category(UUID id, String type, String name){
         this.id = id;
@@ -16,6 +16,22 @@ public class Category extends FinanceEntity {
         this.id = UUID.randomUUID();
         this.type = "";
         this.name = "";
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

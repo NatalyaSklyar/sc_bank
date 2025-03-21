@@ -1,4 +1,4 @@
-package org.example.domain.commands;
+package org.example.app.console.commands;
 
 import org.example.domain.services.OperationService;
 

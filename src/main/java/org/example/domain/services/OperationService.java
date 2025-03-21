@@ -19,7 +19,7 @@ public class OperationService {
             Repository<Operation> operationRepository,
             Repository<BankAccount> accountsRepository,
             Repository<Category> categoryRepository
-            ) {
+    ) {
         this.operationRepository = operationRepository;
         this.accountsRepository = accountsRepository;
         this.categoryRepository = categoryRepository;
@@ -53,16 +53,4 @@ public class OperationService {
         return operationRepository.findAll();
     }
 
-//    public void showAllOperations() {
-//        List<Operation> operations = getAllOperations();
-//        for (Operation operation : operations) {
-//            System.out.println("Type: " + operation.getType());
-//            System.out.println("Bank Account ID: " + operation.getBankAccountId());
-//            System.out.println("Amount: " + operation.getAmount());
-//            System.out.println("Date: " + operation.getDate());
-//            System.out.println("Description: " + operation.getDescription());
-//            System.out.println("Category ID: " + operation.getCategoryId());
-//            System.out.println("-------------------------");
-//        }
-//    }
 }

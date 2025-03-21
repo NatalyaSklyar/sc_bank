@@ -5,6 +5,7 @@ import org.example.domain.model.Category;
 import org.example.domain.model.Operation;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -15,5 +16,5 @@ public abstract class AbstractImporter {
     public abstract HashMap<UUID, Operation> getOperations();
     public abstract HashMap<UUID, Category> getCategories();
 
-    public abstract void load() throws IOException;
+    public abstract void load(Path path) throws IOException;
 }
